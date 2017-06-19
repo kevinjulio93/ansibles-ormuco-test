@@ -4,7 +4,7 @@ move_directory: /var/www/projects/
 
 wsgi_module: /var/www/projects/test_ormuco.wsgi
 
-static_path : /var/www/projects/flaskapp/static
+static_path : /var/www/projects/static
 
 repository: https://github.com/kevinjulio93/flaskapp.git
 
