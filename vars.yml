@@ -8,7 +8,9 @@ static_path : /var/www/projects/static
 
 repository: https://github.com/kevinjulio93/flaskapp.git
 
-server_name : 138.197.30.202
+server_name : 159.203.140.13
+
+server_name_2 : 159.203.133.243
 
 mysql_user : root
 
