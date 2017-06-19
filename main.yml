@@ -1,0 +1,84 @@
+- hosts: webservers
+  remote_user: root
+  sudo: yes
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: installing packages
+      apt: pkg={{ item }} update-cache=yes
+      with_items: "{{ packages }}"
+
+    - name: Starting wsgi module apache
+      apache2_module:
+        state: present
+        name: wsgi
+
+    - name: Cloning project
+      git:
+        repo: '{{ repository }}'
+        dest: '{{ install_root }}'
+
+    - name : creating directory
+      file:
+        path: '{{move_directory}}'
+        state: directory
+
+    - name: Moving project to /var/www
+      command: mv -v {{ install_root }} /var/www
+
+    - name: Installing pip requirements
+      pip:
+        requirements: '{{ move_directory }}requirements.txt'
+
+
+    - name: Start the MySQL service
+      action: service name=mysql state=started
+
+
+
+    - name : Creating mysql user
+      mysql_user:
+        name: '{{mysql_user}}'
+        password: '{{mysql_pass}}'
+        priv: '{{mysql_priv}}'
+        state: present
+
+    - name : Create database with python scripts
+      command : python db_create.py
+      args :
+       chdir: /var/www/projects/
+
+    - name : init  database
+      command : python app_migrations.py db init
+      args :
+        chdir: /var/www/projects/
+
+    - name : Migrating database with python scripts
+      command : python app_migrations.py db migrate
+      args :
+        chdir: /var/www/projects/
+
+    - name : Upgrading database with python scripts
+      command : python app_migrations.py db upgrade
+      args :
+        chdir: /var/www/projects/
+
+    - name: copying apache config
+      template: src=files/config.j2 dest=/etc/apache2/sites-available/config.conf
+
+    - name: Creating the .wsgi File
+      template: src=files/test_ormuco.j2 dest=/var/www/projects/test_ormuco.wsgi
+
+    - name: Setting default config file
+      command: a2ensite config
+
+    - name: restart apache
+      service: name=apache2 state=restarted
+#
+#
+#
+#
+#
+#
+#- include: deploy.yml

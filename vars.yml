@@ -1,0 +1,30 @@
+install_root: /home/projects/
+
+move_directory: /var/www/projects/
+
+wsgi_module: /var/www/projects/test_ormuco.wsgi
+
+static_path : /var/www/projects/flaskapp/static
+
+repository: https://github.com/kevinjulio93/flaskapp.git
+
+server_name : 138.197.30.202
+
+mysql_user : root
+
+mysql_pass : 252601993
+
+mysql_priv : '*.*:ALL'
+
+msql_state : present
+
+packages:
+  - git
+  - python-pip
+  - python-dev
+  - python-psycopg2
+  - python-virtualenv
+  - apache2
+  - libapache2-mod-wsgi
+  - mysql-server
+  - python-mysqldb
