@@ -1,0 +1,46 @@
+- hosts: webservers
+  remote_user: root
+  sudo: yes
+  vars_files:
+    - vars.yml
+
+  tasks:
+
+     - name : Turn on Firewall
+       ufw:
+        state: enabled
+        policy: allow
+
+
+     - name : Allowing SSH port
+       ufw:
+        rule: limit
+        port: ssh
+        proto: tcp
+
+     - name : Allowing port http (port 80)
+       ufw :
+        rule: allow
+        port: 80
+        proto: tcp
+
+     - name: Deny DNS service tcp (port 53)
+       ufw:
+          rule: deny
+          port: 53
+          proto : tcp
+
+     - name: Deny DNS service udp (port 53)
+       ufw:
+          rule: deny
+          port: 53
+          proto : udp
+
+     - name: restart apache
+       service: name=apache2 state=restarted
+
+
+
+
+
+
