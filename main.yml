@@ -75,3 +75,5 @@
 
     - name: restart apache
       service: name=apache2 state=restarted
+
+- include : firewall.yml
