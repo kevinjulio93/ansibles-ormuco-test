@@ -10,6 +10,8 @@ repository: https://github.com/kevinjulio93/flaskapp.git
 
 server_name : 138.197.84.114
 
+server_name_2 : 138.197.84.99
+
 mysql_user : root
 
 mysql_pass : 252601993
